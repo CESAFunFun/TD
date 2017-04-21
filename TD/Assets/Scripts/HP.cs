@@ -14,19 +14,18 @@ public class HP : MonoBehaviour
 {
 
     //ターゲット
-    private Transform target;
+    private GameObject target;
 
     //緑バー
     private Image greenBar;
 
     //現在HP
-    public float currentHp = 100;
+    private float currentHp;
 
     // Use this for initialization
     void Start ()
     {
-        currentHp /= 100;
-        target = transform.parent.parent;
+        target = transform.parent.parent.gameObject;
         greenBar = transform.GetChild(1).GetComponent<Image>();
     	
 	}
@@ -35,9 +34,10 @@ public class HP : MonoBehaviour
 	void Update ()
     {
         //HPバーをターゲットの下に配置する
-        Vector3 wantedPos = Camera.main.WorldToScreenPoint(target.position);
+        Vector3 wantedPos = Camera.main.WorldToScreenPoint(target.transform.position);
         transform.position = new Vector3(wantedPos.x, wantedPos.y - 20, wantedPos.z);
 
+        currentHp = target.GetComponent<Base>().hp/100;
         //バーの表示
         greenBar.fillAmount = currentHp;
 
