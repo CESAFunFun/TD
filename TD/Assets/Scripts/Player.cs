@@ -9,16 +9,16 @@ public class Player : MonoBehaviour {
     public float rotaSpeed = 1F;
     public float shotPower = 8F;
 
-    [SerializeField]
-    private GameObject _bullet;
-
+    private ObjectPool bulletPool;
     private Rigidbody _rigidbody;
     private Vector3 _velocity;
     private Vector3 _direction;
 
 	// Use this for initialization
 	void Start () {
-        // 物理演算の取得
+        // 弾用の貯蔵庫を取得
+        bulletPool = GetComponent<ObjectPool>();
+        // 物理演算を取得
         _rigidbody = GetComponent<Rigidbody>();
 	}
 	
@@ -68,8 +68,16 @@ public class Player : MonoBehaviour {
         // プレハブの弾を発射
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            var bullet = Instantiate(_bullet, transform.position + transform.forward * 2F, Quaternion.identity);
-            bullet.GetComponent<Rigidbody>().velocity = transform.forward * shotPower;
+            // オブジェクトプールで貯蔵している弾から発射
+            var bullet = bulletPool.GetGameObject();
+
+            // 非アクティブな弾があれば使用
+            if (bullet)
+            {
+                bullet.transform.position = transform.position + transform.forward * 2F;
+                bullet.transform.rotation = Quaternion.identity;
+                bullet.GetComponent<Rigidbody>().velocity = transform.forward * shotPower;
+            }
         }
     }
 
