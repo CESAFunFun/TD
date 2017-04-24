@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-    public bool _branch = true;
+    public bool branch;
 
     [SerializeField]
     private float _speed=1.0f;
@@ -12,7 +12,10 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     private Transform _branchPos;
 
+    [SerializeField]
+    private GameObject _bulletPrefab;
 
+    private float _createBulletTime = 1.0f;
 
     private enum MoveState
     {
@@ -29,7 +32,7 @@ public class Enemy : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        _branch = true;
+        branch = true;
 }
 	
 	// Update is called once per frame
@@ -54,13 +57,19 @@ public class Enemy : MonoBehaviour {
                 break;
             case MoveState.STOP:
                 Move(Vector3.zero);
+                _createBulletTime -= Time.deltaTime;
+                if (_createBulletTime <= 0)
+                {
+                    CreateBullet();
+                    _createBulletTime = 1.0f;
+                }
                 break;
         }
 
         if(transform.position.z<=_branchPos.position.z)
         {
             //上方向移動
-            if (_branch)
+            if (branch)
             {
                 if (transform.position.x >= -2.5f)
                     _moveState = MoveState.UP;
@@ -84,7 +93,7 @@ public class Enemy : MonoBehaviour {
 
 	}
 
-    //
+
     //移動
     //
     //引数　スピード
@@ -93,5 +102,14 @@ public class Enemy : MonoBehaviour {
     void Move(Vector3 speed)
     {
         transform.Translate(speed * Time.deltaTime);
+    }
+
+    void CreateBullet()
+    {
+        var bullet = Instantiate(_bulletPrefab, transform.position,Quaternion.identity);
+        if (branch)
+            bullet.GetComponent<Rigidbody>().AddForce(new Vector3(100, 0, 0));
+        else
+            bullet.GetComponent<Rigidbody>().AddForce(new Vector3(-100, 0, 0));
     }
 }
