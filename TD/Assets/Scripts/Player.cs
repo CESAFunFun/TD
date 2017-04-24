@@ -36,11 +36,11 @@ public class Player : MonoBehaviour {
         {
             // 移動処理
             var moveAxis = _gamepad.state.LeftStickAxis;
-            Move(new Vector3(moveAxis.y, 0F, moveAxis.x), moveSpeed);
+            Move(new Vector3(-moveAxis.y, 0F, moveAxis.x), moveSpeed);
 
             // 回転処理
             var rotaAxis = _gamepad.state.rightStickAxis;
-            Rotation(Vector3.up * rotaAxis.x, rotaSpeed);
+            Rotation(Vector3.down * rotaAxis.x, rotaSpeed);
 
             // プレハブの弾を発射
             if (_gamepad.state.RightShoulder)
