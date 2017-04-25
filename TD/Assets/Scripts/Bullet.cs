@@ -14,9 +14,8 @@ public class Bullet : MonoBehaviour {
 		
 	}
 
-    private void OnCollisionEnter(Collision collision) {
-        // XXX: 現状では敵と弾を消している
-        //Destroy(collision.gameObject);
-        //Destroy(this.gameObject);
+    private void OnTriggerEnter(Collider other)
+    {
+
     }
 }
