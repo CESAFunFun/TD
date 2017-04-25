@@ -17,6 +17,11 @@ public class Enemy : MonoBehaviour {
 
     private float _createBulletTime = 1.0f;
 
+    private ObjectPool _bulletPool;
+
+    public float hp = 100;
+
+
     private enum MoveState
     {
         UP,
@@ -32,8 +37,11 @@ public class Enemy : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        //分岐点
         branch = true;
-}
+        // 弾用の貯蔵庫を取得
+        _bulletPool = GetComponent<ObjectPool>();
+    }
 	
 	// Update is called once per frame
 	void Update()
@@ -55,6 +63,7 @@ public class Enemy : MonoBehaviour {
             case MoveState.RIGTH:
                 Move(new Vector3(0, 0, -_speed));
                 break;
+
             case MoveState.STOP:
                 Move(Vector3.zero);
                 _createBulletTime -= Time.deltaTime;
@@ -89,10 +98,7 @@ public class Enemy : MonoBehaviour {
                     _moveState = MoveState.RIGTH;
             }
         }
-
-
 	}
-
 
     //移動
     //
@@ -106,10 +112,27 @@ public class Enemy : MonoBehaviour {
 
     void CreateBullet()
     {
-        var bullet = Instantiate(_bulletPrefab, transform.position,Quaternion.identity);
-        if (branch)
-            bullet.GetComponent<Rigidbody>().AddForce(new Vector3(100, 0, 0));
-        else
-            bullet.GetComponent<Rigidbody>().AddForce(new Vector3(-100, 0, 0));
+
+        // オブジェクトプールで貯蔵している弾から発射
+        var bullet = _bulletPool.GetGameObject();
+
+        // 非アクティブな弾があれば使用
+        if (bullet)
+        {
+            //下方向に発射
+            if (branch)
+                bullet.GetComponent<Rigidbody>().AddForce(new Vector3(100, 0, 0));
+            //上方向に発射
+            else
+                bullet.GetComponent<Rigidbody>().AddForce(new Vector3(-100, 0, 0));
+        }
+       
+    }
+
+    void TakeDamage(float damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+            Destroy(gameObject);
     }
 }
