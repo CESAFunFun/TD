@@ -24,7 +24,7 @@ public class HpSlider : MonoBehaviour {
         }
         else if (GetComponent<Enemy>())
         {
-            _value = GetComponent<Enemy>().hp;
+            _value = GetComponent<Enemy>().GetComponent<Character>().health;
         }
         Vector3 pos = transform.position;
         pos.x += 0.5f;

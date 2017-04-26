@@ -7,19 +7,9 @@ public class Enemy : MonoBehaviour {
     public bool branch;
 
     [SerializeField]
-    private float _speed=1.0f;
-
-    [SerializeField]
     private Transform _branchPos;
 
-    [SerializeField]
-    private GameObject _bulletPrefab;
-
-    private float _createBulletTime = 1.0f;
-
-    private ObjectPool _bulletPool;
-
-    public float hp = 100;
+    private Character _character;
 
 
     private enum MoveState
@@ -36,44 +26,51 @@ public class Enemy : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        // キャラクタースクリプトの取得
+        _character = GetComponent<Character>();
         //分岐点
         branch = true;
-        // 弾用の貯蔵庫を取得
-        _bulletPool = GetComponent<ObjectPool>();
     }
 	
 	// Update is called once per frame
 	void Update()
     {
+        Vector3 dir = Vector3.zero;
+
         switch(_moveState)
         {
             case MoveState.UP:
-                Move(new Vector3(-_speed, 0, 0));
+                dir = Vector3.left;
                 break;
 
             case MoveState.DOWN:
-                Move(new Vector3(_speed, 0, 0));
+                dir = Vector3.right;
                 break;
 
             case MoveState.LEFT:
-                Move(new Vector3(0, 0, _speed));
+                dir = Vector3.forward;
                 break;
 
             case MoveState.RIGTH:
-                Move(new Vector3(0, 0, -_speed));
+                dir = Vector3.back;
                 break;
 
-            case MoveState.STOP:
-                Move(Vector3.zero);
-                _createBulletTime -= Time.deltaTime;
-                if (_createBulletTime <= 0)
+            default:
+                if(branch)
                 {
-                    CreateBullet();
-                    _createBulletTime = 1.0f;
+                    // キャラクターの発射処理
+                    _character.Shot(_character.shotPower, Vector3.right, Vector3.right);
+                }
+                else
+                {
+                    // キャラクターの発射処理
+                    _character.Shot(_character.shotPower, Vector3.left, Vector3.right);
                 }
                 break;
         }
+
+        // キャラクターの移動処理
+        _character.Move(dir, _character.moveSpeed);
 
         if(transform.position.z<=_branchPos.position.z)
         {
@@ -100,39 +97,10 @@ public class Enemy : MonoBehaviour {
         }
 	}
 
-    //移動
-    //
-    //引数　スピード
-    //
-    //戻り値　なし
-    void Move(Vector3 speed)
-    {
-        transform.Translate(speed * Time.deltaTime);
-    }
-
-    void CreateBullet()
-    {
-
-        // オブジェクトプールで貯蔵している弾から発射
-        var bullet = _bulletPool.GetGameObject();
-
-        // 非アクティブな弾があれば使用
-        if (bullet)
-        {
-            //下方向に発射
-            if (branch)
-                bullet.GetComponent<Rigidbody>().AddForce(new Vector3(100, 0, 0));
-            //上方向に発射
-            else
-                bullet.GetComponent<Rigidbody>().AddForce(new Vector3(-100, 0, 0));
-        }
-       
-    }
-
     void TakeDamage(float damage)
     {
-        hp -= damage;
-        if (hp <= 0)
+        _character.health -= damage;
+        if (_character.health <= 0)
             Destroy(gameObject);
     }
 }

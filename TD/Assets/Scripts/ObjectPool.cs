@@ -24,7 +24,11 @@ public class ObjectPool : MonoBehaviour {
 		
 	}
 
-    public GameObject GetGameObject()
+    public GameObject GetGameObject(Transform transform) {
+        return GetGameObject(transform.position, transform.rotation);
+    }
+
+    public GameObject GetGameObject(Vector3 position, Quaternion rotation)
     {
         GameObject result = null;
 
@@ -34,6 +38,8 @@ public class ObjectPool : MonoBehaviour {
             if (!_pool[i].activeSelf)
             {
                 _pool[i].SetActive(true);
+                _pool[i].transform.position = position;
+                _pool[i].transform.rotation = rotation;
                 result = _pool[i];
                 break;
             }

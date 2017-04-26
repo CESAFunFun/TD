@@ -79,7 +79,9 @@
     <Compile Include="Assets\Resources\GamePadInput\GamePad.cs" />
     <Compile Include="Assets\Scripts\Base.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\HP.cs" />
     <Compile Include="Assets\Scripts\HpSlider.cs" />
     <Compile Include="Assets\Scripts\NumberLabel.cs" />

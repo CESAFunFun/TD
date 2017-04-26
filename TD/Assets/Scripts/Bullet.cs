@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
+    [SerializeField]
+    private float _damage = 1F;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -14,8 +17,12 @@ public class Bullet : MonoBehaviour {
 		
 	}
 
-    private void OnTriggerEnter(Collider other)
-    {
+    private void OnTriggerEnter(Collider other) {
+        gameObject.SetActive(false);
 
+        if(other.tag == "Enemy")
+        {
+            other.SendMessage("TakeDamage", _damage);
+        }
     }
 }
