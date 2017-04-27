@@ -8,7 +8,10 @@ public class Bullet : MonoBehaviour {
     private float _damage = 1F;
 
     private void OnTriggerEnter(Collider other) {
-        gameObject.SetActive(false);
+        if (other.tag != "Bullet")
+        {
+            gameObject.SetActive(false);
+        }
 
         if(other.tag == "Player" || other.tag == "Enemy")
         {

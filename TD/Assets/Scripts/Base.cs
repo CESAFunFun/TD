@@ -24,15 +24,6 @@ public class Base : MonoBehaviour
 
 	}
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag == "Bullet")
-        {
-            //ダメージを受ける
-            TakeDamage(10);
-        }
-    }
-
     //---------------------------
     //@! 概要　：ダメージを受ける
     //@! 引数　：ダメージ
@@ -40,5 +31,9 @@ public class Base : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         health -= dmg;
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
