@@ -91,6 +91,7 @@ public class Enemy : MonoBehaviour {
 
         // キャラクターの移動処理
         _character.Move(dir, _character.moveSpeed);
+        transform.LookAt(transform.position + dir);
 
         //向き方向を決める
         transform.LookAt(transform.position + dir);
