@@ -71,6 +71,7 @@ public class Enemy : MonoBehaviour {
 
         // キャラクターの移動処理
         _character.Move(dir, _character.moveSpeed);
+        transform.LookAt(transform.position + dir);
 
         if(transform.position.z<=_branchPos.position.z)
         {

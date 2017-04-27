@@ -82,7 +82,6 @@
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\HP.cs" />
     <Compile Include="Assets\Scripts\HpSlider.cs" />
     <Compile Include="Assets\Scripts\NumberLabel.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
