@@ -8,14 +8,10 @@ public class Enemy : MonoBehaviour {
     public bool branch;
 
     [SerializeField]
-<<<<<<< HEAD
     private float _maxHp = 10F;
 
     [SerializeField]
-    private Transform _branchPos;
-=======
     private Transform[] _movePoint;
->>>>>>> 17f44b61f22b92ac5ea0d236b9f30f8cec110d5d
 
     private int _pointNum = 0;
 
@@ -38,12 +34,8 @@ public class Enemy : MonoBehaviour {
     {
         // キャラクタースクリプトの取得
         _character = GetComponent<Character>();
-<<<<<<< HEAD
         // 体力の最大値を設定
         _character.health = _maxHp;
-=======
-
->>>>>>> 17f44b61f22b92ac5ea0d236b9f30f8cec110d5d
         //分岐点
         branch = true;
 
