@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    public float hp;
+    public float health;
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +39,6 @@ public class Base : MonoBehaviour
     //---------------------------
     public void TakeDamage(float dmg)
     {
-        hp -= dmg;
+        health -= dmg;
     }
 }

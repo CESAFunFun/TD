@@ -7,6 +7,9 @@ public class Enemy : MonoBehaviour {
     public bool branch;
 
     [SerializeField]
+    private float _maxHp = 10F;
+
+    [SerializeField]
     private Transform _branchPos;
 
     private Character _character;
@@ -28,6 +31,8 @@ public class Enemy : MonoBehaviour {
     void Start () {
         // キャラクタースクリプトの取得
         _character = GetComponent<Character>();
+        // 体力の最大値を設定
+        _character.health = _maxHp;
         //分岐点
         branch = true;
     }
@@ -102,6 +107,9 @@ public class Enemy : MonoBehaviour {
     {
         _character.health -= damage;
         if (_character.health <= 0)
-            Destroy(gameObject);
+        {
+            gameObject.SetActive(false);
+            _character.health = _maxHp;
+        }
     }
 }

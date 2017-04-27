@@ -38,11 +38,17 @@ public class Player : MonoBehaviour {
         _character.Move(new Vector3(-moveAxis.y, 0F, moveAxis.x), _character.moveSpeed);
 
         // 回転処理
-        var rotaAxis = _gamepad.state.rightStickAxis;
-        _character.Rotation(Vector3.down * rotaAxis.x, _character.rotaSpeed);
+        if (_gamepad.state.LeftShoulder)
+        {
+            _character.Rotation(Vector3.down, _character.rotaSpeed);
+        }
+        if (_gamepad.state.RightShoulder)
+        {
+            _character.Rotation(Vector3.up, _character.rotaSpeed);
+        }
 
         // プレハブの弾を発射
-        if (_gamepad.state.RightShoulder)
+        if (_gamepad.state.X)
         {
             _character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
         }
