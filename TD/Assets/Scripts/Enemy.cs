@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Enemy : MonoBehaviour {
 
     public bool branch;
 
     [SerializeField]
+<<<<<<< HEAD
     private float _maxHp = 10F;
 
     [SerializeField]
     private Transform _branchPos;
+=======
+    private Transform[] _movePoint;
+>>>>>>> 17f44b61f22b92ac5ea0d236b9f30f8cec110d5d
+
+    private int _pointNum = 0;
 
     private Character _character;
-
 
     private enum MoveState
     {
@@ -24,22 +30,43 @@ public class Enemy : MonoBehaviour {
         STOP
     }
 
-    private MoveState _moveState=MoveState.RIGTH;
+    private MoveState _moveState = MoveState.RIGTH;
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         // キャラクタースクリプトの取得
         _character = GetComponent<Character>();
+<<<<<<< HEAD
         // 体力の最大値を設定
         _character.health = _maxHp;
+=======
+
+>>>>>>> 17f44b61f22b92ac5ea0d236b9f30f8cec110d5d
         //分岐点
         branch = true;
+
+        var enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject obj in enemys)
+        {
+            //自身とのあたり判定を切る
+            Physics.IgnoreCollision(obj.GetComponent<Collider>(), GetComponent<Collider>());
+        }
     }
-	
 	// Update is called once per frame
 	void Update()
     {
+
+        //ポイントを選択する
+        ChengePoint();
+
+        if (_pointNum < _movePoint.Length)
+            //方向を決める
+            _moveState = ChengeMoveState(_movePoint[_pointNum].position);
+        else
+            _moveState = MoveState.STOP;
+
         Vector3 dir = Vector3.zero;
 
         switch(_moveState)
@@ -78,30 +105,63 @@ public class Enemy : MonoBehaviour {
         _character.Move(dir, _character.moveSpeed);
         transform.LookAt(transform.position + dir);
 
-        if(transform.position.z<=_branchPos.position.z)
+        //向き方向を決める
+        transform.LookAt(transform.position + dir);
+
+	}
+
+    //ステートを変更する
+    //
+    //引数　移動先
+    //
+    //戻り値　ステート
+    MoveState ChengeMoveState(Vector3 pos)
+    {
+        Vector3 direction;
+        //差を計算
+        direction = transform.position - pos;
+        //方向を決める
+        direction = direction.normalized;
+
+        //XかZの大きい方をとる
+        if (direction.x < direction.z)
         {
-            //上方向移動
-            if (branch)
-            {
-                if (transform.position.x >= -2.5f)
-                    _moveState = MoveState.UP;
-                else if (transform.position.z <= -8.5)
-                    _moveState = MoveState.STOP;
-                else
-                    _moveState = MoveState.RIGTH;
-            }
-            //下に移動
+            //正か負かを確認
+            if (direction.z > 0)
+                return MoveState.RIGTH;
             else
+                return MoveState.LEFT;
+        }
+        else
+        {
+            if (direction.z > 0)
+                return MoveState.UP;
+            else
+                return MoveState.DOWN;
+        }
+    }
+
+    //ポイントを変更する
+    //
+    //引数　なし
+    //
+    //戻り値　なし
+    void ChengePoint()
+    {
+        if (_pointNum < _movePoint.Length)
+        {
+            //差分計算
+            Vector3 heuristic = transform.position - _movePoint[_pointNum].position;
+            //一定の位置まで近づけばポイントを変更
+            if (Mathf.Abs(heuristic.x) < 0.3)
             {
-                if (transform.position.x <= 2.5f)
-                    _moveState = MoveState.DOWN;
-                else if (transform.position.z <= -8.5)
-                    _moveState = MoveState.STOP;
-                else
-                    _moveState = MoveState.RIGTH;
+                if (Mathf.Abs(heuristic.z) < 0.3)
+                {
+                    _pointNum++;
+                }
             }
         }
-	}
+    }
 
     void TakeDamage(float damage)
     {
