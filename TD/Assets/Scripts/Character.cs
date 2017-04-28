@@ -20,7 +20,8 @@ public class Character : MonoBehaviour {
     public float shotCoolTime = 1F;
     public float health = 100F;
 
-    private float _recastTime;
+    [HideInInspector]
+    public float _recastTime;
     private Vector3 _velocity;
     private Vector3 _direction;
     private Rigidbody _rigidbody;

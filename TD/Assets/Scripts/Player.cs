@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
     private void GamePadControll() {
         // 移動処理
         var moveAxis = _gamepad.state.LeftStickAxis;
-        _character.Move(new Vector3(-moveAxis.y, 0F, moveAxis.x), _character.moveSpeed);
+        _character.Move(new Vector3(moveAxis.x, 0F, -moveAxis.y), _character.moveSpeed);
 
         // 回転処理
         if (_gamepad.state.LeftShoulder)
@@ -58,21 +58,21 @@ public class Player : MonoBehaviour {
         // 横移動
         if (Input.GetKey(KeyCode.A))
         {
-            _character.Move(Vector3.back, _character.moveSpeed);
+            _character.Move(Vector3.left, _character.moveSpeed);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            _character.Move(Vector3.forward, _character.moveSpeed);
+            _character.Move(Vector3.right, _character.moveSpeed);
         }
 
         // 奥移動
         if (Input.GetKey(KeyCode.W))
         {
-            _character.Move(Vector3.left, _character.moveSpeed);
+            _character.Move(Vector3.forward, _character.moveSpeed);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            _character.Move(Vector3.right, _character.moveSpeed);
+            _character.Move(Vector3.back, _character.moveSpeed);
         }
 
         // 回転処理

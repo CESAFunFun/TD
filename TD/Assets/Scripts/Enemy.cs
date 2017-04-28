@@ -64,38 +64,37 @@ public class Enemy : MonoBehaviour {
         switch(_moveState)
         {
             case MoveState.UP:
-                dir = Vector3.left;
-                break;
-
-            case MoveState.DOWN:
-                dir = Vector3.right;
-                break;
-
-            case MoveState.LEFT:
                 dir = Vector3.forward;
                 break;
 
-            case MoveState.RIGTH:
+            case MoveState.DOWN:
                 dir = Vector3.back;
+                break;
+
+            case MoveState.LEFT:
+                dir = Vector3.left;
+                break;
+
+            case MoveState.RIGTH:
+                dir = Vector3.right;
                 break;
 
             default:
                 if(branch)
                 {
                     // キャラクターの発射処理
-                    _character.Shot(_character.shotPower, Vector3.right, Vector3.right);
+                    _character.Shot(_character.shotPower, Vector3.back, Vector3.back);
                 }
                 else
                 {
                     // キャラクターの発射処理
-                    _character.Shot(_character.shotPower, Vector3.left, Vector3.right);
+                    _character.Shot(_character.shotPower, Vector3.forward, Vector3.forward);
                 }
                 break;
         }
 
         // キャラクターの移動処理
         _character.Move(dir, _character.moveSpeed);
-        transform.LookAt(transform.position + dir);
 
         //向き方向を決める
         transform.LookAt(transform.position + dir);
@@ -112,24 +111,22 @@ public class Enemy : MonoBehaviour {
         Vector3 direction;
         //差を計算
         direction = transform.position - pos;
-        //方向を決める
-        direction = direction.normalized;
 
         //XかZの大きい方をとる
-        if (direction.x < direction.z)
+        if (Mathf.Abs(direction.x) <= Mathf.Abs(direction.z))
         {
             //正か負かを確認
-            if (direction.z > 0)
-                return MoveState.RIGTH;
-            else
-                return MoveState.LEFT;
-        }
-        else
-        {
-            if (direction.z > 0)
+            if (direction.z < 0) 
                 return MoveState.UP;
             else
                 return MoveState.DOWN;
+        }
+        else
+        {
+            if (direction.x > 0)
+                return MoveState.LEFT;
+            else
+                return MoveState.RIGTH;
         }
     }
 
@@ -145,9 +142,9 @@ public class Enemy : MonoBehaviour {
             //差分計算
             Vector3 heuristic = transform.position - _movePoint[_pointNum].position;
             //一定の位置まで近づけばポイントを変更
-            if (Mathf.Abs(heuristic.x) < 0.3)
+            if (Mathf.Abs(heuristic.x) < 0.5f)
             {
-                if (Mathf.Abs(heuristic.z) < 0.3)
+                if (Mathf.Abs(heuristic.z) < 0.5f)
                 {
                     _pointNum++;
                 }
