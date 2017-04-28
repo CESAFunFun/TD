@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿//================================
+//         Object Pool
+//--------------------------------
+//@! Takayoshi Ogawa
+//@! 2017/04/28
+//================================
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
