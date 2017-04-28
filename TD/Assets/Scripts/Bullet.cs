@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour {
             gameObject.SetActive(false);
         }
 
-        if(other.tag == "Player" || other.tag == "Enemy")
+        if (other.tag == "Enemy")
         {
             other.SendMessage("TakeDamage", _damage);
         }
