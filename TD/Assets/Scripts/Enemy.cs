@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Enemy : MonoBehaviour {
+public class Enemy : Character {
 
     public bool branch;
-
-    [SerializeField]
-    private float _maxHp = 10F;
 
     [SerializeField]
     private Transform[] _movePoint;
 
     private int _pointNum = 0;
-
-    private Character _character;
 
     private enum MoveState
     {
@@ -30,12 +25,11 @@ public class Enemy : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start()
-    {
-        // キャラクタースクリプトの取得
-        _character = GetComponent<Character>();
-        // 体力の最大値を設定
-        _character.health = _maxHp;
+    void Start() {
+
+        // キャラクターの初期化
+        base.Start();
+
         //分岐点
         branch = true;
 
@@ -47,8 +41,10 @@ public class Enemy : MonoBehaviour {
         }
     }
 	// Update is called once per frame
-	void Update()
-    {
+	void Update() {
+
+        // キャラクターの更新処理
+        base.Update();
 
         //ポイントを選択する
         ChengePoint();
@@ -83,23 +79,28 @@ public class Enemy : MonoBehaviour {
                 if(branch)
                 {
                     // キャラクターの発射処理
-                    _character.Shot(_character.shotPower, Vector3.back, Vector3.back);
+                    Shot(shotPower, Vector3.back, Vector3.back);
                 }
                 else
                 {
                     // キャラクターの発射処理
-                    _character.Shot(_character.shotPower, Vector3.forward, Vector3.forward);
+                    Shot(shotPower, Vector3.forward, Vector3.forward);
                 }
                 break;
         }
 
         // キャラクターの移動処理
-        _character.Move(dir, _character.moveSpeed);
+        Move(dir, moveSpeed);
 
         //向き方向を決める
         transform.LookAt(transform.position + dir);
 
-	}
+    }
+
+    private void FixedUpdate() {
+        // キャラクターの位置回転計算
+        base.FixedUpdate();
+    }
 
     //ステートを変更する
     //
@@ -149,16 +150,6 @@ public class Enemy : MonoBehaviour {
                     _pointNum++;
                 }
             }
-        }
-    }
-
-    void TakeDamage(float damage)
-    {
-        _character.health -= damage;
-        if (_character.health <= 0)
-        {
-            gameObject.SetActive(false);
-            _character.health = _maxHp;
         }
     }
 }

@@ -18,7 +18,7 @@ public class HpSlider : MonoBehaviour {
         }
         else if (GetComponent<Enemy>())
         {
-            sliderBar.GetComponent<Slider>().maxValue = GetComponent<Enemy>().GetComponent<Character>().health;
+            sliderBar.GetComponent<Slider>().maxValue = GetComponent<Enemy>().health;
         }
     }
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class HpSlider : MonoBehaviour {
         }
         else if (GetComponent<Enemy>())
         {
-            _value = GetComponent<Enemy>().GetComponent<Character>().health;
+            _value = GetComponent<Enemy>().health;
         }
 
         //Vector3 pos = transform.position;
