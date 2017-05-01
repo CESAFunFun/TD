@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
     private void GamePadControll() {
         // 移動処理
         var moveAxis = _gamepad.state.LeftStickAxis;
-        _character.Move(new Vector3(moveAxis.x, 0F, -moveAxis.y), _character.moveSpeed);
+        _character.Move(new Vector3(moveAxis.x, 0F, moveAxis.y), _character.moveSpeed);
 
         // 回転処理
         if (_gamepad.state.LeftShoulder)
