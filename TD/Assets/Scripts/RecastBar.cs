@@ -20,7 +20,7 @@ public class RecastBar : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        float recast = player.GetComponent<Character>()._recastTime * num;
+        float recast = player.GetComponent<Character>().recastTime * num;
         _recastBar.fillAmount -= recast;
     }
 }

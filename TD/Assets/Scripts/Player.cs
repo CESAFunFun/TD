@@ -1,23 +1,35 @@
-﻿using System.Collections;
+﻿//================================
+//         Player
+//--------------------------------
+//@! Takayoshi Ogawa
+//@! 2017/04/28
+//================================
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour {
 
-    private Character _character;
+[RequireComponent(typeof(Rigidbody))]
+public class Player : Character {
+
+    //private Character _character;
     private PlayerGamePad _gamepad;
 
 	// Use this for initialization
 	void Start () {
-        // キャラクタースクリプトの取得
-        _character = GetComponent<Character>();
+        // キャラクターの初期化処理
+        base.Start();
+
         // ゲームパッドの取得
         _gamepad = GetComponent<PlayerGamePad>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        // キャラクターの更新処理
+        base.Update();
 
         // ゲームパッドが接続されていれば
         if (_gamepad.state != null)
@@ -32,25 +44,34 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private void FixedUpdate() {
+        // キャラクターの位置回転計算
+        base.FixedUpdate();
+    }
+
     private void GamePadControll() {
         // 移動処理
         var moveAxis = _gamepad.state.LeftStickAxis;
-        _character.Move(new Vector3(moveAxis.x, 0F, -moveAxis.y), _character.moveSpeed);
+<<<<<<< HEAD
+        _character.Move(new Vector3(moveAxis.x, 0F, moveAxis.y), _character.moveSpeed);
+=======
+        Move(new Vector3(moveAxis.x, 0F, moveAxis.y), moveSpeed);
+>>>>>>> b2c9bcb1d3592d646f4a7086b675fb72bb0521e6
 
         // 回転処理
         if (_gamepad.state.LeftShoulder)
         {
-            _character.Rotation(Vector3.down, _character.rotaSpeed);
+            Rotation(Vector3.down, rotaSpeed);
         }
         if (_gamepad.state.RightShoulder)
         {
-            _character.Rotation(Vector3.up, _character.rotaSpeed);
+            Rotation(Vector3.up, rotaSpeed);
         }
 
         // プレハブの弾を発射
         if (_gamepad.state.X)
         {
-            _character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
+            Shot(shotPower, transform.forward, transform.forward * 2F);
         }
     }
 
@@ -58,37 +79,37 @@ public class Player : MonoBehaviour {
         // 横移動
         if (Input.GetKey(KeyCode.A))
         {
-            _character.Move(Vector3.left, _character.moveSpeed);
+            Move(Vector3.left, moveSpeed);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            _character.Move(Vector3.right, _character.moveSpeed);
+            Move(Vector3.right, moveSpeed);
         }
 
         // 奥移動
         if (Input.GetKey(KeyCode.W))
         {
-            _character.Move(Vector3.forward, _character.moveSpeed);
+            Move(Vector3.forward, moveSpeed);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            _character.Move(Vector3.back, _character.moveSpeed);
+            Move(Vector3.back, moveSpeed);
         }
 
         // 回転処理
         if (Input.GetKey(KeyCode.Q))
         {
-            _character.Rotation(Vector3.down, _character.rotaSpeed);
+            Rotation(Vector3.down, rotaSpeed);
         }
         else if (Input.GetKey(KeyCode.E))
         {
-            _character.Rotation(Vector3.up, _character.rotaSpeed);
+            Rotation(Vector3.up, rotaSpeed);
         }
 
         // プレハブの弾を発射
         if (Input.GetKey(KeyCode.Space))
         {
-            _character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
+            Shot(shotPower, transform.forward, transform.forward * 2F);
         }
     }
 }
