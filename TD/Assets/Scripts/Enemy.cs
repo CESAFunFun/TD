@@ -17,6 +17,9 @@ public class Enemy : MonoBehaviour {
 
     private Character _character;
 
+    [HideInInspector]
+    public bool moved = true;
+
     private enum MoveState
     {
         UP,
@@ -49,55 +52,81 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
     {
-
-        //ポイントを選択する
-        ChengePoint();
-
-        if (_pointNum < _movePoint.Length)
-            //方向を決める
-            _moveState = ChengeMoveState(_movePoint[_pointNum].position);
-        else
-            _moveState = MoveState.STOP;
-
-        Vector3 dir = Vector3.zero;
-
-        switch(_moveState)
+        if (moved)
         {
-            case MoveState.UP:
-                dir = Vector3.forward;
-                break;
 
-            case MoveState.DOWN:
-                dir = Vector3.back;
-                break;
 
-            case MoveState.LEFT:
-                dir = Vector3.left;
-                break;
+            //ポイントを選択する
+            ChengePoint();
 
-            case MoveState.RIGTH:
-                dir = Vector3.right;
-                break;
+            if (_pointNum < _movePoint.Length)
+                //方向を決める
+                _moveState = ChengeMoveState(_movePoint[_pointNum].position);
+            else
+                _moveState = MoveState.STOP;
 
-            default:
-                if(branch)
-                {
-                    // キャラクターの発射処理
-                    _character.Shot(_character.shotPower, Vector3.back, Vector3.back);
-                }
-                else
-                {
-                    // キャラクターの発射処理
-                    _character.Shot(_character.shotPower, Vector3.forward, Vector3.forward);
-                }
-                break;
+            Vector3 dir = Vector3.zero;
+
+            Vector3 vel = Vector3.zero;
+
+            switch (_moveState)
+            {
+                case MoveState.UP:
+                    vel = dir = Vector3.forward;
+                    break;
+
+                case MoveState.DOWN:
+                    vel = dir = Vector3.back;
+                    break;
+
+                case MoveState.LEFT:
+                    vel = dir = Vector3.left;
+                    break;
+
+                case MoveState.RIGTH:
+                    vel = dir = Vector3.right;
+                    break;
+                case MoveState.STOP:
+                    dir = Vector3.back;
+
+                    if (branch)
+                    {
+                        // キャラクターの発射処理
+                        _character.Shot(_character.shotPower, Vector3.back, Vector3.back);
+                    }
+                    else
+                    {
+                        // キャラクターの発射処理
+                        _character.Shot(_character.shotPower, Vector3.forward, Vector3.forward);
+                    }
+                    break;
+
+                default:
+                    if (branch)
+                    {
+                        // キャラクターの発射処理
+                        _character.Shot(_character.shotPower, Vector3.back, Vector3.back);
+                    }
+                    else
+                    {
+                        // キャラクターの発射処理
+                        _character.Shot(_character.shotPower, Vector3.forward, Vector3.forward);
+                    }
+                    break;
+            }
+
+            // キャラクターの移動処理
+            _character.Move(vel, _character.moveSpeed);
+
+            //向き方向を決める
+            transform.LookAt(transform.position + dir);
+        }
+        else
+        {
+            _character.Move(transform.position, 0);
         }
 
-        // キャラクターの移動処理
-        _character.Move(dir, _character.moveSpeed);
-
-        //向き方向を決める
-        transform.LookAt(transform.position + dir);
+        Debug.Log(moved);
 
 	}
 

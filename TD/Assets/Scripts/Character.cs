@@ -65,8 +65,7 @@ public class Character : MonoBehaviour {
         if (_recastTime <= 0F)
         {
             // オブジェクトプールで貯蔵している弾から発射
-            var bullet = _bulletPool.GetGameObject(transform.position + ShotPos, Quaternion.identity);
-
+            var bullet = _bulletPool.GetGameObject(transform.position + ShotPos, transform.rotation);            
             // 非アクティブな弾があれば使用
             if (bullet)
             {

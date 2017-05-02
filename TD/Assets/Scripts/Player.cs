@@ -88,7 +88,7 @@ public class Player : MonoBehaviour {
         // プレハブの弾を発射
         if (Input.GetKey(KeyCode.Space))
         {
-            _character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
+            _character.Shot(_character.shotPower, transform.forward, transform.forward * 3F);
         }
     }
 }
