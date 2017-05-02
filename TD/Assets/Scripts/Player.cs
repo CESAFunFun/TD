@@ -5,50 +5,57 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour {
 
+    [HideInInspector]
+    public bool isMove = true;
+    [HideInInspector]
+    public PlayerGamePad gamepad;
+
     private Character _character;
-    private PlayerGamePad _gamepad;
 
 	// Use this for initialization
 	void Start () {
+        // ゲームパッドの取得
+        gamepad = GetComponent<PlayerGamePad>();
         // キャラクタースクリプトの取得
         _character = GetComponent<Character>();
-        // ゲームパッドの取得
-        _gamepad = GetComponent<PlayerGamePad>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        // ゲームパッドが接続されていれば
-        if (_gamepad.state != null)
+        if (isMove)
         {
-            // ゲームパッドでの操作
-            GamePadControll();
-        }
-        else
-        {
-            // キーボードでの操作
-            KeyboardControll();
+            // ゲームパッドが接続されていれば
+            if (gamepad.state != null)
+            {
+                // ゲームパッドでの操作
+                GamePadControll();
+            }
+            else
+            {
+                // キーボードでの操作
+                KeyboardControll();
+            }
         }
     }
 
     private void GamePadControll() {
         // 移動処理
-        var moveAxis = _gamepad.state.LeftStickAxis;
+        var moveAxis = gamepad.state.LeftStickAxis;
         _character.Move(new Vector3(moveAxis.x, 0F, -moveAxis.y), _character.moveSpeed);
 
         // 回転処理
-        if (_gamepad.state.LeftShoulder)
+        if (gamepad.state.LeftShoulder)
         {
             _character.Rotation(Vector3.down, _character.rotaSpeed);
         }
-        if (_gamepad.state.RightShoulder)
+        if (gamepad.state.RightShoulder)
         {
             _character.Rotation(Vector3.up, _character.rotaSpeed);
         }
 
         // プレハブの弾を発射
-        if (_gamepad.state.X)
+        if (gamepad.state.X)
         {
             _character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
         }
@@ -88,7 +95,15 @@ public class Player : MonoBehaviour {
         // プレハブの弾を発射
         if (Input.GetKey(KeyCode.Space))
         {
-            _character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
+            _character.Shot(_character.shotPower, transform.forward, transform.forward * 3F);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.tag == "Player")
+        {
+            // 衝突したプレイヤーと接続する
+            other.gameObject.GetComponent<Player>().isMove = false;
         }
     }
 }

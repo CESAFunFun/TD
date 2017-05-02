@@ -70,6 +70,7 @@ public class Character : MonoBehaviour {
             // 非アクティブな弾があれば使用
             if (bullet)
             {
+                bullet.GetComponent<Bullet>().element = element;
                 bullet.GetComponent<Rigidbody>().velocity = direction * power;
                 _recastTime = shotCoolTime;
             }
