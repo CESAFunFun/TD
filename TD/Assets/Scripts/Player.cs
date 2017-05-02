@@ -52,11 +52,8 @@ public class Player : Character {
     private void GamePadControll() {
         // 移動処理
         var moveAxis = _gamepad.state.LeftStickAxis;
-<<<<<<< HEAD
-        _character.Move(new Vector3(moveAxis.x, 0F, moveAxis.y), _character.moveSpeed);
-=======
+
         Move(new Vector3(moveAxis.x, 0F, moveAxis.y), moveSpeed);
->>>>>>> b2c9bcb1d3592d646f4a7086b675fb72bb0521e6
 
         // 回転処理
         if (_gamepad.state.LeftShoulder)
