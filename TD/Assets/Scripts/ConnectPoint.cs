@@ -1,7 +1,15 @@
-﻿using System.Collections;
+﻿//================================
+//         Connect Point
+//--------------------------------
+//@! Takayoshi Ogawa
+//@! 2017/05/02
+//================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// !@ 空のオブジェクトにアタッチしたうえで
+// !@ Inspector上にPlayerを設定してください
 public class ConnectPoint : MonoBehaviour {
 
     [SerializeField]
@@ -23,10 +31,12 @@ public class ConnectPoint : MonoBehaviour {
         {
             if (!_isConnect)
             {
+                // 位置と親子の設定を行う
                 transform.position = _player1.transform.position - (_player1.transform.position - _player2.transform.position);
                 _player1.transform.SetParent(transform);
                 _player2.transform.SetParent(transform);
             }
+            // 接続された一度っきりの処理
             _isConnect = true;
         }
 
@@ -47,7 +57,6 @@ public class ConnectPoint : MonoBehaviour {
             if(_player1.gamepad.state.X || _player2.gamepad.state.X)
             {
                 Debug.Log("Shot");
-                //_character.Shot(_character.shotPower, transform.forward, transform.forward * 2F);
             }
 
             // 両プレイヤーの左右回転ボタンが全て入力されていたら接続解除
@@ -65,6 +74,7 @@ public class ConnectPoint : MonoBehaviour {
                     _player2.transform.SetParent(null);
                 }
 
+                // 解除された一度っきりの処理
                 _isConnect = false;
             }
         }
